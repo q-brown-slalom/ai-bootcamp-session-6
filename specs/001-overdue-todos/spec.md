@@ -5,6 +5,16 @@
 **Status**: Draft  
 **Input**: User description: "Support for Overdue Todo Items - Users need a clear, visual way to identify which todos have not been completed by their due date"
 
+## Clarifications
+
+### Session 2025-12-15
+
+- Q: Which visual treatment should be used to distinguish overdue todos? → A: Red/orange text color for due date + warning icon (⚠️) next to title
+- Q: What happens when a todo becomes overdue while the user is viewing the list (midnight passes)? → A: Refresh on next interaction
+- Q: What UI pattern should be used for filtering overdue todos? → A: Toggle button that switches between "All Todos" and "Overdue Only"
+- Q: Where should the overdue count badge be displayed? → A: Next to the header title "My Todos" (e.g., "My Todos (3 overdue)")
+- Q: What happens when the last overdue todo is completed while in "Overdue Only" mode? → A: Stay in filter mode
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Visual Identification of Overdue Items (Priority: P1)
@@ -17,7 +27,7 @@ Users need to immediately see which incomplete todos have passed their due date 
 
 **Acceptance Scenarios**:
 
-1. **Given** I have an incomplete todo with a due date of yesterday, **When** I view the todo list, **Then** the todo is visually distinguished as overdue (e.g., red text, warning icon, or highlighted border)
+1. **Given** I have an incomplete todo with a due date of yesterday, **When** I view the todo list, **Then** the todo displays a warning icon (⚠️) next to the title AND the due date is displayed in red/orange text
 2. **Given** I have a completed todo with a due date in the past, **When** I view the todo list, **Then** the todo is NOT marked as overdue (completed items are not overdue)
 3. **Given** I have an incomplete todo with a due date of today, **When** I view the todo list, **Then** the todo is NOT marked as overdue (today is not yet overdue)
 4. **Given** I have an incomplete todo with a due date in the future, **When** I view the todo list, **Then** the todo is NOT marked as overdue
@@ -35,9 +45,9 @@ Users want to focus exclusively on overdue items by filtering or sorting the lis
 
 **Acceptance Scenarios**:
 
-1. **Given** I have multiple todos with varying due dates, **When** I apply a filter to show only overdue items, **Then** I see only incomplete todos with due dates in the past
-2. **Given** I have applied the overdue filter, **When** I clear the filter, **Then** I see all todos again
-3. **Given** I have multiple overdue todos, **When** I sort by overdue status, **Then** overdue items appear at the top of the list
+1. **Given** I have multiple todos with varying due dates, **When** I click the toggle button to switch to "Overdue Only" mode, **Then** I see only incomplete todos with due dates in the past
+2. **Given** I have applied the overdue filter (viewing "Overdue Only"), **When** I click the toggle button to switch to "All Todos" mode, **Then** I see all todos again
+3. **Given** I am in "Overdue Only" mode with no overdue items, **When** I view the list, **Then** I see an empty state message indicating no overdue todos
 
 ---
 
@@ -51,32 +61,33 @@ Users want to see at a glance how many overdue items they have without scrolling
 
 **Acceptance Scenarios**:
 
-1. **Given** I have 3 overdue todos, **When** I view the application, **Then** I see a badge showing "3" overdue items
-2. **Given** I complete an overdue todo, **When** the todo is marked complete, **Then** the overdue count decreases by 1
-3. **Given** I have no overdue todos, **When** I view the application, **Then** the overdue badge is not displayed or shows "0"
+1. **Given** I have 3 overdue todos, **When** I view the application, **Then** I see "My Todos (3 overdue)" in the header
+2. **Given** I complete an overdue todo, **When** the todo is marked complete, **Then** the header updates to show the decremented count (e.g., "My Todos (2 overdue)")
+3. **Given** I have no overdue todos, **When** I view the application, **Then** the header shows only "My Todos" without any count badge
 
 ---
 
 ### Edge Cases
 
-- What happens when a todo becomes overdue while the user is viewing the list? (Due date is today and midnight passes)
-- How does the system handle time zones for determining "today" vs "past"?
-- What happens when a todo's due date is changed from future to past?
-- What happens when a user marks an overdue todo as complete?
-- How are overdue items displayed when the list is empty or contains only completed items?
+- **Midnight transitions**: When a todo becomes overdue while the user is viewing the list (due date is today and midnight passes), the overdue status updates on the next user interaction (clicking, adding todo, refreshing page). No automatic real-time updates at midnight.
+- **Timezone handling**: System uses user's local date/time for determining "today" vs "past" (see Assumptions)
+- **Due date changes**: When a todo's due date is changed from future to past (or vice versa), overdue status updates immediately upon save
+- **Completing overdue todos**: When a user marks an overdue todo as complete, it immediately loses overdue styling (completed items are never overdue)
+- **Empty/completed lists**: When list contains only completed items or is empty, overdue indicators are not shown (no special treatment needed)
+- **Filter mode with zero results**: When in "Overdue Only" mode and the last overdue todo is completed (or all overdue items are removed), the filter stays active and displays an empty state message. User must manually switch back to "All Todos" mode.
 
 ## Requirements *(mandatory)*
 
 ### Functional Requirements
 
 - **FR-001**: System MUST determine if an incomplete todo is overdue by comparing its due date to the current date (excluding time)
-- **FR-002**: System MUST visually distinguish overdue todos from non-overdue todos using color, icon, or styling
+- **FR-002**: System MUST visually distinguish overdue todos by displaying a warning icon (⚠️) next to the todo title AND rendering the due date in red/orange text (color from Halloween theme palette)
 - **FR-003**: System MUST NOT mark completed todos as overdue, regardless of their due date
 - **FR-004**: System MUST NOT mark todos without due dates as overdue
 - **FR-005**: System MUST consider a todo overdue only when its due date is strictly in the past (today is NOT overdue)
 - **FR-006**: System MUST update overdue status dynamically when todos are created, updated, completed, or when the date changes
-- **FR-007**: System MUST provide a way to filter or sort todos to show overdue items separately (P2 feature)
-- **FR-008**: System MUST display a count of overdue todos (P3 feature)
+- **FR-007**: System MUST provide a toggle button above the todo list that switches between "All Todos" and "Overdue Only" modes (P2 feature)
+- **FR-008**: System MUST display the count of overdue todos next to the "My Todos" header (e.g., "My Todos (3 overdue)") and hide the count when zero overdue items exist (P3 feature)
 - **FR-009**: System MUST persist the visual state without requiring page refresh when overdue status changes
 
 ### Key Entities *(include if feature involves data)*
@@ -109,7 +120,7 @@ Users want to see at a glance how many overdue items they have without scrolling
 - "Overdue" means the due date is in the past; today is NOT considered overdue
 - Completed items are never overdue, regardless of when they were completed
 - The existing todo data structure includes a dueDate field (already implemented per functional requirements)
-- Visual distinction will follow the Halloween theme (orange/red colors per UI guidelines)
+- Overdue todos use a dual visual indicator: warning icon (⚠️) next to title + red/orange due date text
 - The feature requires no backend changes - overdue logic is frontend-only computation
 
 ## Out of Scope
