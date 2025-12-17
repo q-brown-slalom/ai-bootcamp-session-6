@@ -4,6 +4,7 @@ import TodoList from './components/TodoList';
 import ThemeToggle from './components/ThemeToggle';
 import ConfirmDialog from './components/ConfirmDialog';
 import TodoService from './services/todoService';
+import { isOverdue } from './utils/todoHelpers';
 import './App.css';
 
 function App() {
@@ -112,13 +113,17 @@ function App() {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
+  const overdueCount = todos.filter(todo => 
+    isOverdue(todo.dueDate, todo.completed === 1)
+  ).length;
+
   return (
     <div className="app">
       <header className="app-header">
         <div className="header-content">
           <h1 className="app-title">
             <span className="app-icon">🎃</span>
-            My Todos
+            My Todos {overdueCount > 0 && `(${overdueCount} overdue)`}
           </h1>
           <ThemeToggle theme={theme} onToggle={handleToggleTheme} />
         </div>

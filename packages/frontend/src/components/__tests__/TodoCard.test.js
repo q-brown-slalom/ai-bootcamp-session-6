@@ -1,6 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import TodoCard from '../TodoCard';
+import { isOverdue } from '../../utils/todoHelpers';
+
+// Mock the utility
+jest.mock('../../utils/todoHelpers');
 
 describe('TodoCard Component', () => {
   const mockTodo = {
@@ -98,5 +102,109 @@ describe('TodoCard Component', () => {
     render(<TodoCard todo={todoNoDate} {...mockHandlers} isLoading={false} />);
     
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
+  });
+});
+
+describe('TodoCard - Overdue Features', () => {
+  const mockHandlers = {
+    onToggle: jest.fn(),
+    onEdit: jest.fn(),
+    onDelete: jest.fn()
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should display warning icon for overdue todos', () => {
+    isOverdue.mockReturnValue(true);
+    
+    const todo = {
+      id: '1',
+      title: 'Overdue task',
+      dueDate: '2025-12-10',
+      completed: 0
+    };
+
+    render(
+      <TodoCard
+        todo={todo}
+        onToggle={mockHandlers.onToggle}
+        onDelete={mockHandlers.onDelete}
+        onEdit={mockHandlers.onEdit}
+        isLoading={false}
+      />
+    );
+
+    expect(screen.getByText('⚠️')).toBeInTheDocument();
+  });
+
+  it('should apply overdue class for overdue todos', () => {
+    isOverdue.mockReturnValue(true);
+    
+    const todo = {
+      id: '1',
+      title: 'Overdue task',
+      dueDate: '2025-12-10',
+      completed: 0
+    };
+
+    const { container } = render(
+      <TodoCard
+        todo={todo}
+        onToggle={mockHandlers.onToggle}
+        onDelete={mockHandlers.onDelete}
+        onEdit={mockHandlers.onEdit}
+        isLoading={false}
+      />
+    );
+
+    expect(container.querySelector('.todo-overdue')).toBeInTheDocument();
+  });
+
+  it('should not display warning icon for non-overdue todos', () => {
+    isOverdue.mockReturnValue(false);
+    
+    const todo = {
+      id: '1',
+      title: 'Future task',
+      dueDate: '2025-12-25',
+      completed: 0
+    };
+
+    render(
+      <TodoCard
+        todo={todo}
+        onToggle={mockHandlers.onToggle}
+        onDelete={mockHandlers.onDelete}
+        onEdit={mockHandlers.onEdit}
+        isLoading={false}
+      />
+    );
+
+    expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
+  });
+
+  it('should not display warning icon for completed todos with past dates', () => {
+    isOverdue.mockReturnValue(false);
+    
+    const todo = {
+      id: '1',
+      title: 'Completed past task',
+      dueDate: '2025-12-10',
+      completed: 1
+    };
+
+    render(
+      <TodoCard
+        todo={todo}
+        onToggle={mockHandlers.onToggle}
+        onDelete={mockHandlers.onDelete}
+        onEdit={mockHandlers.onEdit}
+        isLoading={false}
+      />
+    );
+
+    expect(screen.queryByText('⚠️')).not.toBeInTheDocument();
   });
 });

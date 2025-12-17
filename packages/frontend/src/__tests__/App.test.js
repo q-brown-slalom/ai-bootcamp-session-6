@@ -3,6 +3,10 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import App from '../App';
+import { isOverdue } from '../utils/todoHelpers';
+
+// Mock the utility
+jest.mock('../utils/todoHelpers');
 
 // Mock window.matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -231,5 +235,110 @@ describe('App Component', () => {
     const themToggleAfter = screen.getByRole('button', { name: /Switch to light mode/ });
     fireEvent.click(themToggleAfter);
     expect(localStorage.getItem('todoAppTheme')).toBe('light');
+  });
+});
+
+describe('App - Overdue Count', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    isOverdue.mockReset();
+  });
+
+  test('displays overdue count in header when overdue todos exist', async () => {
+    server.use(
+      rest.get('/api/todos', (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            { id: 1, title: 'Overdue', dueDate: '2025-12-10', completed: 0, createdAt: '2025-11-01T00:00:00Z' },
+            { id: 2, title: 'Future', dueDate: '2025-12-25', completed: 0, createdAt: '2025-11-02T00:00:00Z' }
+          ])
+        );
+      })
+    );
+
+    // Mock isOverdue to return true for first todo, false for second
+    isOverdue.mockImplementation((dueDate, completed) => {
+      return dueDate === '2025-12-10' && !completed;
+    });
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/My Todos/)).toBeInTheDocument();
+    });
+
+    // Should show overdue count
+    expect(screen.getByText(/\(1 overdue\)/i)).toBeInTheDocument();
+  });
+
+  test('decrements count when overdue todo is completed', async () => {
+    server.use(
+      rest.get('/api/todos', (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            { id: 1, title: 'Overdue 1', dueDate: '2025-12-10', completed: 0, createdAt: '2025-11-01T00:00:00Z' },
+            { id: 2, title: 'Overdue 2', dueDate: '2025-12-09', completed: 0, createdAt: '2025-11-02T00:00:00Z' }
+          ])
+        );
+      }),
+      rest.patch('/api/todos/:id/toggle', (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json({
+            id: parseInt(req.params.id),
+            title: 'Overdue 1',
+            dueDate: '2025-12-10',
+            completed: 1,
+            createdAt: '2025-11-01T00:00:00Z'
+          })
+        );
+      })
+    );
+
+    // Initially both are overdue
+    isOverdue.mockImplementation((dueDate, completed) => {
+      if (completed) return false;
+      return dueDate === '2025-12-10' || dueDate === '2025-12-09';
+    });
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText(/\(2 overdue\)/i)).toBeInTheDocument();
+    });
+
+    // Toggle first todo to complete
+    const checkboxes = screen.getAllByRole('checkbox');
+    fireEvent.click(checkboxes[0]);
+
+    await waitFor(() => {
+      expect(screen.getByText(/\(1 overdue\)/i)).toBeInTheDocument();
+    });
+  });
+
+  test('does not display count when no overdue todos', async () => {
+    server.use(
+      rest.get('/api/todos', (req, res, ctx) => {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            { id: 1, title: 'Future', dueDate: '2025-12-25', completed: 0, createdAt: '2025-11-01T00:00:00Z' }
+          ])
+        );
+      })
+    );
+
+    isOverdue.mockReturnValue(false);
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(screen.getByText('My Todos')).toBeInTheDocument();
+    });
+
+    // Should NOT show count badge
+    expect(screen.queryByText(/overdue/i)).not.toBeInTheDocument();
   });
 });

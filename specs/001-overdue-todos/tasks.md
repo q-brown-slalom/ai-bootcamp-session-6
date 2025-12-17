@@ -25,10 +25,10 @@
 
 **Purpose**: Verify project is ready for feature implementation
 
-- [ ] T001 Verify project dependencies installed with `npm install` at repository root
-- [ ] T002 Verify existing tests pass with `npm test` to confirm baseline functionality
-- [ ] T003 [P] Create utils directory if not exists: `packages/frontend/src/utils/`
-- [ ] T004 [P] Create utils test directory if not exists: `packages/frontend/src/utils/__tests__/`
+- [X] T001 Verify project dependencies installed with `npm install` at repository root
+- [X] T002 Verify existing tests pass with `npm test` to confirm baseline functionality
+- [X] T003 [P] Create utils directory if not exists: `packages/frontend/src/utils/`
+- [X] T004 [P] Create utils test directory if not exists: `packages/frontend/src/utils/__tests__/`
 
 ---
 
@@ -40,17 +40,17 @@
 
 ### Foundational Tests (TDD - Write First, Must Fail)
 
-- [ ] T005 [US1] Write unit test for `isOverdue()` with past due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
-- [ ] T006 [US1] Write unit test for `isOverdue()` with completed todo in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
-- [ ] T007 [US1] Write unit test for `isOverdue()` with future due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
-- [ ] T008 [US1] Write unit test for `isOverdue()` with today's date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
-- [ ] T009 [US1] Write unit test for `isOverdue()` with null/undefined due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
-- [ ] T010 [US1] Verify all tests FAIL by running `npm test --workspace=frontend -- todoHelpers.test.js`
+- [X] T005 [US1] Write unit test for `isOverdue()` with past due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
+- [X] T006 [US1] Write unit test for `isOverdue()` with completed todo in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
+- [X] T007 [US1] Write unit test for `isOverdue()` with future due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
+- [X] T008 [US1] Write unit test for `isOverdue()` with today's date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
+- [X] T009 [US1] Write unit test for `isOverdue()` with null/undefined due date in `packages/frontend/src/utils/__tests__/todoHelpers.test.js`
+- [X] T010 [US1] Verify all tests FAIL by running `npm test --workspace=frontend -- todoHelpers.test.js`
 
 ### Foundational Implementation
 
-- [ ] T011 [US1] Implement `isOverdue()` function in `packages/frontend/src/utils/todoHelpers.js`
-- [ ] T012 [US1] Verify all unit tests PASS by running `npm test --workspace=frontend -- todoHelpers.test.js`
+- [X] T011 [US1] Implement `isOverdue()` function in `packages/frontend/src/utils/todoHelpers.js`
+- [X] T012 [US1] Verify all unit tests PASS by running `npm test --workspace=frontend -- todoHelpers.test.js`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -71,20 +71,20 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T013 [P] [US1] Write test for warning icon display on overdue todos in `packages/frontend/src/components/__tests__/TodoCard.test.js`
-- [ ] T014 [P] [US1] Write test for overdue CSS class applied to card in `packages/frontend/src/components/__tests__/TodoCard.test.js`
-- [ ] T015 [P] [US1] Write test for no warning icon on non-overdue todos in `packages/frontend/src/components/__tests__/TodoCard.test.js`
-- [ ] T016 [P] [US1] Write test for no warning icon on completed todos with past dates in `packages/frontend/src/components/__tests__/TodoCard.test.js`
-- [ ] T017 [US1] Verify all TodoCard overdue tests FAIL by running `npm test --workspace=frontend -- TodoCard.test.js`
+- [X] T013 [P] [US1] Write test for warning icon display on overdue todos in `packages/frontend/src/components/__tests__/TodoCard.test.js`
+- [X] T014 [P] [US1] Write test for overdue CSS class applied to card in `packages/frontend/src/components/__tests__/TodoCard.test.js`
+- [X] T015 [P] [US1] Write test for no warning icon on non-overdue todos in `packages/frontend/src/components/__tests__/TodoCard.test.js`
+- [X] T016 [P] [US1] Write test for no warning icon on completed todos with past dates in `packages/frontend/src/components/__tests__/TodoCard.test.js`
+- [X] T017 [US1] Verify all TodoCard overdue tests FAIL by running `npm test --workspace=frontend -- TodoCard.test.js`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [US1] Add overdue CSS styles to `packages/frontend/src/styles/theme.css` (`.todo-overdue` class with red/orange text and warning icon styling)
-- [ ] T019 [US1] Import `isOverdue` function in `packages/frontend/src/components/TodoCard.js`
-- [ ] T020 [US1] Calculate overdue status in TodoCard component using `isOverdue(todo.dueDate, todo.completed)`
-- [ ] T021 [US1] Apply conditional CSS class `todo-overdue` to card container when overdue
-- [ ] T022 [US1] Add warning icon (⚠️) next to todo title when overdue in `packages/frontend/src/components/TodoCard.js`
-- [ ] T023 [US1] Verify all TodoCard tests PASS by running `npm test --workspace=frontend -- TodoCard.test.js`
+- [X] T018 [US1] Add overdue CSS styles to `packages/frontend/src/styles/theme.css` (`.todo-overdue` class with red/orange text and warning icon styling)
+- [X] T019 [US1] Import `isOverdue` function in `packages/frontend/src/components/TodoCard.js`
+- [X] T020 [US1] Calculate overdue status in TodoCard component using `isOverdue(todo.dueDate, todo.completed)`
+- [X] T021 [US1] Apply conditional CSS class `todo-overdue` to card container when overdue
+- [X] T022 [US1] Add warning icon (⚠️) next to todo title when overdue in `packages/frontend/src/components/TodoCard.js`
+- [X] T023 [US1] Verify all TodoCard tests PASS by running `npm test --workspace=frontend -- TodoCard.test.js`
 - [ ] T024 [US1] Manual test: Create todos with various due dates and verify visual indicators appear correctly
 
 **Checkpoint**: User Story 1 complete - overdue items are visually distinct
@@ -106,21 +106,21 @@
 
 ### Tests for User Story 2 (TDD - Write First, Must Fail)
 
-- [ ] T025 [P] [US2] Write test for filter toggle button display in `packages/frontend/src/components/__tests__/TodoList.test.js`
-- [ ] T026 [P] [US2] Write test for filtering to show only overdue todos in `packages/frontend/src/components/__tests__/TodoList.test.js`
-- [ ] T027 [P] [US2] Write test for toggling back to show all todos in `packages/frontend/src/components/__tests__/TodoList.test.js`
-- [ ] T028 [P] [US2] Write test for empty state when no overdue todos in filter mode in `packages/frontend/src/components/__tests__/TodoList.test.js`
-- [ ] T029 [US2] Verify all TodoList filter tests FAIL by running `npm test --workspace=frontend -- TodoList.test.js`
+- [X] T025 [P] [US2] Write test for filter toggle button display in `packages/frontend/src/components/__tests__/TodoList.test.js`
+- [X] T026 [P] [US2] Write test for filtering to show only overdue todos in `packages/frontend/src/components/__tests__/TodoList.test.js`
+- [X] T027 [P] [US2] Write test for toggling back to show all todos in `packages/frontend/src/components/__tests__/TodoList.test.js`
+- [X] T028 [P] [US2] Write test for empty state when no overdue todos in filter mode in `packages/frontend/src/components/__tests__/TodoList.test.js`
+- [X] T029 [US2] Verify all TodoList filter tests FAIL by running `npm test --workspace=frontend -- TodoList.test.js`
 
 ### Implementation for User Story 2
 
-- [ ] T030 [US2] Import `isOverdue` function in `packages/frontend/src/components/TodoList.js`
-- [ ] T031 [US2] Add `filterMode` state variable in TodoList component (useState with 'all' or 'overdue')
-- [ ] T032 [US2] Implement filter logic to create `displayedTodos` array based on filterMode
-- [ ] T033 [US2] Add toggle button above todo list with click handler to switch between modes
-- [ ] T034 [US2] Update button text dynamically: "Show Overdue Only" when in 'all' mode, "Show All Todos" when in 'overdue' mode
-- [ ] T035 [US2] Update empty state message to show different text for 'overdue' mode: "No overdue todos! 🎉"
-- [ ] T036 [US2] Verify all TodoList tests PASS by running `npm test --workspace=frontend -- TodoList.test.js`
+- [X] T030 [US2] Import `isOverdue` function in `packages/frontend/src/components/TodoList.js`
+- [X] T031 [US2] Add `filterMode` state variable in TodoList component (useState with 'all' or 'overdue')
+- [X] T032 [US2] Implement filter logic to create `displayedTodos` array based on filterMode
+- [X] T033 [US2] Add toggle button above todo list with click handler to switch between modes
+- [X] T034 [US2] Update button text dynamically: "Show Overdue Only" when in 'all' mode, "Show All Todos" when in 'overdue' mode
+- [X] T035 [US2] Update empty state message to show different text for 'overdue' mode: "No overdue todos! 🎉"
+- [X] T036 [US2] Verify all TodoList tests PASS by running `npm test --workspace=frontend -- TodoList.test.js`
 - [ ] T037 [US2] Manual test: Toggle filter and verify correct todos display in each mode
 
 **Checkpoint**: User Stories 1 AND 2 complete - users can identify and filter overdue items
@@ -141,17 +141,17 @@
 
 ### Tests for User Story 3 (TDD - Write First, Must Fail)
 
-- [ ] T038 [P] [US3] Write test for overdue count display in header in `packages/frontend/src/__tests__/App.test.js`
-- [ ] T039 [P] [US3] Write test for count decrement when overdue todo completed in `packages/frontend/src/__tests__/App.test.js`
-- [ ] T040 [P] [US3] Write test for no count display when zero overdue todos in `packages/frontend/src/__tests__/App.test.js`
-- [ ] T041 [US3] Verify all App count badge tests FAIL by running `npm test --workspace=frontend -- App.test.js`
+- [X] T038 [P] [US3] Write test for overdue count display in header in `packages/frontend/src/__tests__/App.test.js`
+- [X] T039 [P] [US3] Write test for count decrement when overdue todo completed in `packages/frontend/src/__tests__/App.test.js`
+- [X] T040 [P] [US3] Write test for no count display when zero overdue todos in `packages/frontend/src/__tests__/App.test.js`
+- [X] T041 [US3] Verify all App count badge tests FAIL by running `npm test --workspace=frontend -- App.test.js`
 
 ### Implementation for User Story 3
 
-- [ ] T042 [US3] Import `isOverdue` function in `packages/frontend/src/App.js`
-- [ ] T043 [US3] Calculate `overdueCount` by filtering todos array with `isOverdue()` and getting length
-- [ ] T044 [US3] Update header h1 to conditionally display count: "My Todos" or "My Todos (X overdue)"
-- [ ] T045 [US3] Verify all App tests PASS by running `npm test --workspace=frontend -- App.test.js`
+- [X] T042 [US3] Import `isOverdue` function in `packages/frontend/src/App.js`
+- [X] T043 [US3] Calculate `overdueCount` by filtering todos array with `isOverdue()` and getting length
+- [X] T044 [US3] Update header h1 to conditionally display count: "My Todos" or "My Todos (X overdue)"
+- [X] T045 [US3] Verify all App tests PASS by running `npm test --workspace=frontend -- App.test.js`
 - [ ] T046 [US3] Manual test: Create/complete overdue todos and verify count updates in real-time
 
 **Checkpoint**: All user stories complete - full overdue feature is functional
@@ -162,15 +162,15 @@
 
 **Purpose**: Improvements that affect multiple user stories and final validation
 
-- [ ] T047 [P] Run full test suite with coverage: `npm test --workspace=frontend -- --coverage`
-- [ ] T048 Verify test coverage meets 80% minimum threshold per constitution
+- [X] T047 [P] Run full test suite with coverage: `npm test --workspace=frontend -- --coverage`
+- [X] T048 Verify test coverage meets 80% minimum threshold per constitution
 - [ ] T049 [P] Verify CSS styles work in both light and dark modes
 - [ ] T050 Test edge case: Mark overdue todo complete and verify styling immediately disappears
 - [ ] T051 Test edge case: Edit due date from future to past and verify overdue styling appears
 - [ ] T052 Test edge case: Stay in "Overdue Only" mode when last overdue item is completed
-- [ ] T053 [P] Run full application test: `npm test` (all packages)
+- [X] T053 [P] Run full application test: `npm test` (all packages)
 - [ ] T054 Validate against quickstart.md verification checklist
-- [ ] T055 [P] Code cleanup: Remove any console.log statements, format code consistently
+- [X] T055 [P] Code cleanup: Remove any console.log statements, format code consistently
 - [ ] T056 Run linter if configured: `npm run lint` (fix any issues)
 
 ---
